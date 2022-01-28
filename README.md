@@ -7,7 +7,7 @@
 
 Longer in Twitter ne fait pas partie du Chrome Web Store donc...
 * Aller sur chrome://extensions et activer le mode développeur
-* Télécharger l'archive .zip de la dernière version de l'[extension](https://github.com/johan-perso/arretable/releases) sur votre ordinateur et décompressez-la.
+* Télécharger l'archive .zip de la dernière version de l'[extension](https://github.com/johan-perso/longer-in-twitter/releases) sur votre ordinateur et décompressez-la.
 * Appuyer sur le bouton "Charger l'extension non empaquetée" via la page d'extensions et sélectionner le dossier précédemment créée.
 
 L'extension devrait être installée et opérationnelle ! Tenter d'aller sur un [tweet comprenant un TwitLonger](https://twitter.com/twitlonger/status/738264675855519744) et admirer !

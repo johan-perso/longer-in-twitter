@@ -1,0 +1,16 @@
+{
+	"name": "Longer in Twitter",
+	"description": "Affiche les TwitLonger directement dans le tweet",
+	"version": "2.1.0",
+	"manifest_version": 3,
+	"content_scripts": [{
+		"matches": [
+			"https://twitter.com/*"
+		],
+		"js": ["index.js"]
+	}],
+	"background": {
+		"service_worker": "background.js"
+	},
+	"permissions": []
+}

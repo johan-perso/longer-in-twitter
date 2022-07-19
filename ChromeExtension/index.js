@@ -108,13 +108,13 @@ setInterval(() => {
 		if(location.href.match(/^https?:\/\/twitter\.com\/(?:#!\/)?(\w+)\/status(es)?\/(\d+)/g)){
 			// Remplacer le lien sur les sources de tweets (Twitter for iPhone, Twitter for Android, Twitter Web App)
 			// ptdr y'a 0 rapport mais ça me parait utile et le plus optimisé c'est de le mettre ici
-			var tweetSource = document.getElementsByClassName("css-4rbku5 css-18t94o4 css-901oao css-16my406 r-9ilb82 r-1loqt21 r-poiln3 r-bcqeeo r-1jeg54m r-qvutc0")[0]
+			var tweetSource = document.getElementsByClassName("css-4rbku5 css-18t94o4 css-901oao css-16my406 r-1bwzh9t r-1loqt21 r-poiln3 r-bcqeeo r-1jeg54m r-qvutc0")[0]
 			if(tweetSource?.innerText === "Twitter for iPhone") tweetSource?.setAttribute("href","https://apps.apple.com/fr/app/twitter/id333903271")
 			if(tweetSource?.innerText === "Twitter for Android") tweetSource?.setAttribute("href","https://play.google.com/store/apps/details?id=com.twitter.android")
 			if(tweetSource?.innerText === "Twitter for iPad") tweetSource?.setAttribute("href","https://apps.apple.com/fr/app/twitter/id333903271")
 			if(tweetSource?.innerText === "Twitter for Mac") tweetSource?.setAttribute("href","https://apps.apple.com/fr/app/twitter/id1482454543")
 			if(tweetSource?.innerText === "Twitter Web App") tweetSource?.setAttribute("href","https://twitter.com")
-			if(tweetSource?.innerText === "Twitterminal") tweetSource?.setAttribute("href","https://twiterminal.carrd.co")
+			if(tweetSource?.innerText === "Twitterminal") tweetSource?.setAttribute("href","https://github.com/johan-perso/twitterminal")
 			if(tweetSource?.innerText === "TweetDeck") tweetSource?.setAttribute("href","https://tweetdeck.twitter.com")
 
 			// Obtenir le contenu du tweet
@@ -137,15 +137,15 @@ setInterval(() => {
 				// Enlever le texte "Read: " avant le lien du TwitLonger (vu que le lien sera enlevé)
 				tweet.innerHTML = `${tweet.innerHTML.replace("\nRead: </span>",'</span>')}`
 
-				// Rendre le titre du TwitLonger et ajouter un "via TwitLonger"
+				// Rendre le titre du TwitLonger gras et ajouter un "via TwitLonger"
 				tweet.childNodes[0].style.fontWeight = 'bold'
 				tweet.childNodes[0].innerHTML = `<span>${tweet.childNodes[0]?.innerText?.split("\n")[0] || tweet.childNodes[0]?.innerText}<span style="font-weight: normal;">&nbsp; — &nbsp;(via TwitLonger)</span></span>`
 
 				// Enlever le lien du TwitLonger (la ligne après l'enlève visuellement mais il reste cliquable)
 				tweet.childNodes[tweet.childNodes.length - 1].remove()
 
-				// Obtenir le TwitLonger
-				chrome.runtime.sendMessage({ text: id }, function(response){
+				// Obtenir le contenu
+				chrome.runtime.sendMessage({ type: 'twitlonger', text: id }, function(response){
 					tweet.innerHTML = `${tweet.innerHTML.replace(`tl.gd/${id}`,'').replace(`twitlonger.com/show/${id}`,'')}\n\n${response.replace(/\n/g,'')}`
 				});
 
@@ -153,6 +153,35 @@ setInterval(() => {
 				document?.querySelectorAll("article")[0]?.childNodes[0]?.childNodes[0]?.childNodes[0]?.childNodes[2]?.childNodes[0]?.childNodes[0]?.childNodes[1]?.remove()
 			} else {
 				console.log("[Longer-In-Twitter] no TwitLonger found")
+			}
+
+			// Si le contenu du tweet contient un xltweet
+			if(tweetContent && tweetContent.includes("xltw.in/")){
+				// Obtenir l'ID du XLTweet
+				var id = tweetContent.match(/xltw\.in\/(\w+)/g)[0].replace("xltw.in/", '');
+
+				// Définir le tweet dans une variable
+				var tweet = document.querySelectorAll("article")[0].childNodes[0].childNodes[0].childNodes[0].childNodes[2].childNodes[0].childNodes[0].childNodes[0]
+
+				// Enlever le texte "Read: " avant le lien du XLTweet (vu que le lien sera enlevé)
+				tweet.innerHTML = `${tweet.innerHTML.replace("\nRead: </span>",'</span>')}`
+
+				// Rendre le titre du XLTweet gras et ajouter un "via XLTweet"
+				tweet.childNodes[0].style.fontWeight = 'bold'
+				tweet.childNodes[0].innerHTML = `<span>${tweet.childNodes[0]?.innerText?.split("\n")[0] || tweet.childNodes[0]?.innerText}<span style="font-weight: normal;">&nbsp; — &nbsp;(via XLTweet)</span></span>`
+
+				// Enlever le lien du XLTweet (la ligne après l'enlève visuellement mais il reste cliquable)
+				tweet.childNodes[tweet.childNodes.length - 1].remove()
+
+				// Obtenir le contenu
+				chrome.runtime.sendMessage({ type: 'xltweet', text: id }, function(response){
+					tweet.innerHTML = `${tweet.innerHTML.replace(`xltw.in/${id}`,'')}\n\n${response.replace(/\n/g,'')}`
+				});
+
+				// Enlever le bouton pour traduire
+				document?.querySelectorAll("article")[0]?.childNodes[0]?.childNodes[0]?.childNodes[0]?.childNodes[2]?.childNodes[0]?.childNodes[0]?.childNodes[1]?.remove()
+			} else {
+				console.log("[Longer-In-Twitter] no XLTweet found")
 			}
 		}
 	}

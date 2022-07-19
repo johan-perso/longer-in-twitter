@@ -1,7 +1,7 @@
 {
 	"name": "Longer in Twitter",
 	"description": "Affiche les TwitLonger directement dans le tweet",
-	"version": "2.0.0",
+	"version": "2.2.0",
 	"manifest_version": 2,
 	"content_scripts": [{
 		"matches": [

@@ -34,6 +34,6 @@ Par la même occasion, quelques autres changements ont été apportés :
 
 ## Licence
 
-MIT © [Johan](https://johanstickman.com)
+MIT © [Johan](https://johanstick.me)
 
 *Longer in Twitter n'est pas associé à TwitLonger/Twitter*
